@@ -14,6 +14,13 @@ class stack
 	std::unique_ptr <T[]> m_ptr;
 	size_t m_size;
 public:
+	T const & top (void) const 
+	{
+		assert (m_ptr.get ());
+		
+		return m_ptr[m_size - 1];
+	}
+
 	void push (T && el) noexcept
 	{
 		std::unique_ptr <T[]> ptr{ new T [m_size + 1] };
