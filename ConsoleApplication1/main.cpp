@@ -30,7 +30,7 @@ public:
 	ipoint () {}
 };
 
-std::future <bool> submitForm (const std::string& form)
+std::future <bool> form_run (const std::string& form)
 {
 	std::packaged_task <bool (const std::string&)> task ([](const std::string& form) -> bool
 	{
@@ -39,7 +39,7 @@ std::future <bool> submitForm (const std::string& form)
 		point += 10;
 		point = point + 5;
 
-		std::cout << "Handle the submitted form: " << form << "\n";
+		std::cout << "Form element: " << form << "\n";
 		return true;
 	});
 
@@ -51,7 +51,10 @@ std::future <bool> submitForm (const std::string& form)
 
 void main () noexcept
 {
-	submitForm ("window").wait ();
+	if (form_run ("window").get ())
+	{
+		std::cout << "good\n";
+	}
 
 	system ("pause");
 }
