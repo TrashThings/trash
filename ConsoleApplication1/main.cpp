@@ -30,30 +30,28 @@ public:
 	ipoint () {}
 };
 
-std::future<bool> submitForm (const std::string& form)
+std::future <bool> submitForm (const std::string& form)
 {
-	point <ipoint> point (5ui16, 5ui16);
-	
-	point += 10;
-	point = point + 5;
-
-
-	auto handle = [](const std::string& form) -> bool
+	std::packaged_task <bool (const std::string&)> task ([](const std::string& form) -> bool
 	{
+		point <ipoint> point (5ui16, 5ui16);
+
+		point += 10;
+		point = point + 5;
+
 		std::cout << "Handle the submitted form: " << form << "\n";
 		return true;
-	};
+	});
 
-	std::packaged_task<bool (const std::string&)> task (handle);
 	auto future = task.get_future ();
-	std::thread thread (std::move (task), form);
-	thread.detach ();
-	return std::move (future);
+	std::thread (std::move (task), form).detach ();
+
+	return future;
 }
 
 void main () noexcept
 {
-	submitForm ("window");
+	submitForm ("window").wait ();
 
 	system ("pause");
 }
