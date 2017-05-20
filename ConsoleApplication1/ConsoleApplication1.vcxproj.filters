@@ -29,5 +29,11 @@
     <ClInclude Include="vector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="deque.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="list.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

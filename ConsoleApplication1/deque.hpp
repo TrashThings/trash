@@ -5,22 +5,27 @@
 #include <memory>
 #include <assert.h>
 
-
+/*
 _AN_BEGIN
 
 template <typename T>
-class vector
+class deque
 {
-	std::unique_ptr <T[]> m_ptr;
 	size_t m_size;
+	
+	class node
+	{
+	public:
+		std::unique_ptr <T> next;
+		std::unique_ptr <T> prew;
+
+		deque () : prev{ nullptr }, next{ nullptr } {}
+	};
+
+	std::unique_ptr <T> m_begin;
+	std::unique_ptr <T> m_end;
 public:
 	const size_t size () const { return m_size; }
-	
-	T &operator[] (const size_t &iter) noexcept
-	{
-		assert (m_size > iter);
-		return m_ptr[iter];
-	}
 
 	template <typename ... ARGS> void push_back (ARGS &&... args) noexcept
 	{
@@ -57,4 +62,4 @@ public:
 	vector () noexcept : m_size{ 0 } {}
 };
 
-_AN_END
+_AN_END*/

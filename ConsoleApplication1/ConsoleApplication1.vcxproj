@@ -142,7 +142,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="deque.hpp" />
     <ClInclude Include="headers.hpp" />
+    <ClInclude Include="list.hpp" />
     <ClInclude Include="stack.hpp" />
     <ClInclude Include="vector.hpp" />
   </ItemGroup>

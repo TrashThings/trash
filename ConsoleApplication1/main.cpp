@@ -1,8 +1,10 @@
 #include <future>
 #include <iostream>
 #include <string>
+
 #include "stack.hpp"
 #include "vector.hpp"
+#include "list.hpp"
 
 
 template <typename T> class point : public T
@@ -47,6 +49,7 @@ std::future <bool> form_run (const std::string& form)
 
 		an::stack <std::unique_ptr <custom>> stack;
 		an::vector <std::unique_ptr <custom>> vector;
+		an::list <int> list;
 
 		// stack
 		for (int q{ 0 }; q != 5; ++q)
@@ -55,13 +58,11 @@ std::future <bool> form_run (const std::string& form)
 			c->x = q;
 			stack.push (std::forward <std::unique_ptr <custom>> (c));
 		}
-
 		for (int q{ 0 }; q != 5; ++q)
 		{
 			auto el{ std::move (stack.pop ()) };
-			std::cout << "el[" << q << "]: " << el->x << '\n';
+			std::cout << "stack[" << q << "]: " << el->x << '\n';
 		}
-
 
 		// vector
 		for (int q{ 0 }; q != 5; ++q)
@@ -74,6 +75,22 @@ std::future <bool> form_run (const std::string& form)
 		{
 			std::cout << "vector[" << q << "]: " << vector[0]->x << '\n';
 			vector.erase (0);
+		}
+
+		// list
+		for (int q{ 0 }; q != 5; ++q)
+		{
+			list.push (std::move (q));
+		}
+
+		{
+			an::list <int>::node * node = list.get ();
+			int q{ 0 };
+			while (nullptr != node)
+			{
+				std::cout << "list [" << q++ << "]: " << node->data << '\n';
+				node = node->next;
+			}
 		}
 
 		point += 10;
@@ -90,6 +107,6 @@ void main () noexcept
 	{
 		std::cout << "good\n";
 	}
-
+	
 	system ("pause");
 }
