@@ -41,7 +41,7 @@ public:
 
 		--m_size;
 
-		auto el{ m_ptr[m_size] };
+		auto el{ std::move (m_ptr[m_size]) };
 
 		std::unique_ptr <T[]> ptr{ new T[m_size] };
 		assert (ptr.get ());
