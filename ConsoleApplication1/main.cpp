@@ -92,6 +92,19 @@ std::future <bool> form_run (const std::string& form)
 				node = node->next;
 			}
 		}
+		for (size_t q{ 0 }, c{ list.size () }; q < c; ++q)
+		{
+			list.pop ();
+		}
+		{
+			an::list <int>::node * node = list.get ();
+			int q{ 0 };
+			while (nullptr != node)
+			{
+				std::cout << "p list [" << q++ << "]: " << node->data << '\n';
+				node = node->next;
+			}
+		}
 
 		point += 10;
 		point = point + 5;

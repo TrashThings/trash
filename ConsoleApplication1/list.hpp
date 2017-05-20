@@ -31,7 +31,7 @@ public:
 
 	void push (T && args) noexcept
 	{
-		node * item = new node;
+		node * item = new node;    
 		item->data = args;
 
 		if (nullptr == m_head)
@@ -45,6 +45,17 @@ public:
 		}
 
 		++m_size;
+	}
+
+	void pop ()
+	{
+		node * temp = this->get ();
+		assert (temp);
+
+		m_head = temp->next;
+		delete temp;
+
+		--m_size;
 	}
 
 	list () noexcept : m_size{ 0 }, m_head{ nullptr } {}
