@@ -5,61 +5,72 @@
 #include <memory>
 #include <assert.h>
 
-/*
+
 _AN_BEGIN
 
 template <typename T>
-class deque
+class list
 {
 	size_t m_size;
-	
+public:
 	class node
 	{
 	public:
-		std::unique_ptr <T> next;
-		std::unique_ptr <T> prew;
+		T data;
 
-		deque () : prev{ nullptr }, next{ nullptr } {}
+		node * next;
+
+		node () : next{ nullptr } {}
 	};
-
-	std::unique_ptr <T> m_begin;
-	std::unique_ptr <T> m_end;
+private:
+	node * m_head;
 public:
 	const size_t size () const { return m_size; }
 
-	template <typename ... ARGS> void push_back (ARGS &&... args) noexcept
+	node * get () const { return m_head; }
+
+	void push (T && args) noexcept
 	{
-		std::unique_ptr <T[]> ptr{ new T[m_size + 1] };
-		assert (ptr.get ());
+		node * item = new node;
+		item->data = args;
 
-		ptr[m_size] = std::move (T (std::forward <ARGS> (args)...));
-		const auto src_begin{ m_ptr.get () };
-		std::move (src_begin, std::next (src_begin, m_size), stdext::checked_array_iterator <T *> (ptr.get (), m_size + 1));
-
-		m_ptr = std::move (ptr);
+		if (nullptr == m_head)
+		{
+			m_head = item;
+		}
+		else
+		{
+			item->next = m_head;
+			m_head = item;
+		}
 
 		++m_size;
 	}
 
-	void erase (const size_t &iter) noexcept
+	void pop ()
 	{
-		assert (m_size >= iter + 1);
+		node * temp = this->get ();
+		assert (temp);
+
+		m_head = temp->next;
+		delete temp;
 
 		--m_size;
-
-		std::unique_ptr <T[]> ptr{ new T[m_size] };
-		assert (ptr.get ());
-
-		auto src_begin{ m_ptr.get () };
-		std::move (src_begin, std::next (src_begin, iter), stdext::checked_array_iterator <T *> (ptr.get (), m_size));
-
-		src_begin = m_ptr.get () + iter + 1;
-		std::move (src_begin, std::next (src_begin, m_size - iter), stdext::checked_array_iterator <T *> (ptr.get (), m_size));
-
-		m_ptr = std::move (ptr);
 	}
 
-	vector () noexcept : m_size{ 0 } {}
+	list () noexcept : m_size{ 0 }, m_head{ nullptr } {}
+	~list ()
+	{
+		node * temp = nullptr;
+		node * node = this->get ();
+
+		while (nullptr != node)
+		{
+			temp = node;
+			node = node->next;
+			delete temp;
+		}
+	}
 };
 
-_AN_END*/
+_AN_END

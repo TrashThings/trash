@@ -1,8 +1,5 @@
 #pragma once
 
-#include "headers.hpp"
-#include <iterator>
-#include <memory>
 #include <assert.h>
 
 
@@ -11,7 +8,6 @@ _AN_BEGIN
 template <typename T>
 class list
 {
-	size_t m_size;
 public:
 	class node
 	{
@@ -23,28 +19,36 @@ public:
 		node () : next{ nullptr } {}
 	};
 private:
-	node * m_head;
+	node * m_root;
 public:
-	const size_t size () const { return m_size; }
-
-	node * get () const { return m_head; }
+	node * get () const { return m_root; }
 
 	void push (T && args) noexcept
 	{
 		node * item = new node;    
 		item->data = args;
 
-		if (nullptr == m_head)
+		if (nullptr == m_root)
 		{
-			m_head = item;
-		}
-		else
-		{
-			item->next = m_head;
-			m_head = item;
+			m_root = item;
+			return;
 		}
 
-		++m_size;
+		item->next = m_root;
+		m_root = item;
+	}
+	void reverse ()
+	{
+		node * new_root = nullptr;
+
+		while (m_root)
+		{
+			node * next{ m_root->next };
+			m_root->next = new_root;
+			new_root = m_root;
+			m_root = next;
+		}
+		m_root = new_root;
 	}
 
 	void pop ()
@@ -52,13 +56,11 @@ public:
 		node * temp = this->get ();
 		assert (temp);
 
-		m_head = temp->next;
+		m_root = temp->next;
 		delete temp;
-
-		--m_size;
 	}
 
-	list () noexcept : m_size{ 0 }, m_head{ nullptr } {}
+	list () noexcept : m_root{ nullptr } {}
 	~list ()
 	{
 		node * temp = nullptr;

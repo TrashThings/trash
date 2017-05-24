@@ -35,5 +35,8 @@
     <ClInclude Include="list.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="allocator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

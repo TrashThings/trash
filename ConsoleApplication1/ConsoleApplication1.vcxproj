@@ -142,6 +142,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="allocator.hpp" />
     <ClInclude Include="deque.hpp" />
     <ClInclude Include="headers.hpp" />
     <ClInclude Include="list.hpp" />

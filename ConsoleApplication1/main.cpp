@@ -1,6 +1,7 @@
 #include <future>
 #include <iostream>
 #include <string>
+#include <array>
 
 #include "stack.hpp"
 #include "vector.hpp"
@@ -40,6 +41,51 @@ public:
 	int x;
 	~custom () {}
 };
+
+void kiss_miss ()
+{
+	std::cout << "my:\n";
+	for (uint16_t q = 1; q <= 100; ++q)
+	{
+		if (0 == q % 3)
+		{
+			if (0 == q % 5)
+			{
+				std::cout << "MissKiss";
+			}
+			else
+			{
+				std::cout << "Miss";
+			}
+		}
+		else if (0 == q % 5)
+		{
+			std::cout << "Kiss";
+		}
+		else
+		{
+			std::cout << q;
+		}
+
+		std::cout << ", ";
+
+		std::this_thread::sleep_for (std::chrono::milliseconds (50));
+	}
+
+	std::cout << "\n\nn my:\n";
+	for (uint16_t q = 1; q <= 100; ++q)
+	{
+		const std::array <std::string, 4> text{ std::to_string (q), "Miss", "Kiss", "MissKiss" };
+
+		const bool three{ 0 == q % 3 };
+		const bool five{ 0 == q % 5 };
+
+
+		std::cout << text[three + five * 2] << ", ";
+
+		std::this_thread::sleep_for (std::chrono::milliseconds (50));
+	}
+}
 
 std::future <bool> form_run (const std::string& form)
 {
@@ -92,10 +138,20 @@ std::future <bool> form_run (const std::string& form)
 				node = node->next;
 			}
 		}
-		for (size_t q{ 0 }, c{ list.size () }; q < c; ++q)
+		list.reverse ();
+		{
+			an::list <int>::node * node = list.get ();
+			int q{ 0 };
+			while (nullptr != node)
+			{
+				std::cout << "list [" << q++ << "]: " << node->data << '\n';
+				node = node->next;
+			}
+		}
+		/*for (size_t q{ 0 }, c{ list.size () }; q < c; ++q)
 		{
 			list.pop ();
-		}
+		}*/
 		{
 			an::list <int>::node * node = list.get ();
 			int q{ 0 };
@@ -110,16 +166,43 @@ std::future <bool> form_run (const std::string& form)
 		point = point + 5;
 
 		std::cout << "Form element: " << form << "\n";
+
+		kiss_miss ();
 		return true;
 	}, form);
 }
 
 void main () noexcept
 {
-	if (form_run ("window").get ())
+	// list
+	an::list <int> list;
+
+	for (int q{ 0 }; q != 5; ++q)
 	{
-		std::cout << "good\n";
+		list.push (std::move (q));
 	}
+
+	{
+		an::list <int>::node * node = list.get ();
+		int q{ 0 };
+		while (nullptr != node)
+		{
+			std::cout << "list [" << q++ << "]: " << node->data << '\n';
+			node = node->next;
+		}
+	}
+	list.reverse ();
+	{
+		an::list <int>::node * node = list.get ();
+		int q{ 0 };
+		while (nullptr != node)
+		{
+			std::cout << "list [" << q++ << "]: " << node->data << '\n';
+			node = node->next;
+		}
+	}
+
+	//if (form_run ("window").get ()) { std::cout << "good\n"; }
 	
 	system ("pause");
 }
